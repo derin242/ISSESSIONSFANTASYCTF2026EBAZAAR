@@ -1,12 +1,12 @@
 # 🚩 E-Bazaar: ISSessions FantasyCTF 2026 Write-up
 **Author:** Derin Ozturk  
 **Role:** CTF Developer | 2nd Year Cyber Security Student, Sheridan College  
-**Category:** Web Exploitation / Business Logic  
+**Category:** Web Exploitation
 
 ---
 
 ## Background
-The **E-Bazaar** was a spotlight challenge for the 2026 ISSessions FantasyCTF. Despite being a fantasy retail site, it remained unsolved by the end of the event. This write-up explores the three distinct web vulnerabilities required to "piece together" the 3-part flag.
+The **E-Bazaar** was a spotlight challenge for the 2026 ISSessions FantasyCTF. Despite being my favorite challange out of all challanges I've made, it remained unsolved by the end of the event. This write-up explores the three distinct web vulnerabilities required to "piece together" the 3-part flag.
 
 ![Challange Banner](https://github.com/user-attachments/assets/2182e93f-d2bf-4b1c-ad0f-a4db56c515c9)
 
@@ -61,7 +61,7 @@ Intercepting the checkout request reveals parameters encoded in Ascii Hex and Ba
 
 ![Checkout Parameters](https://github.com/user-attachments/assets/781dee22-6e60-4c19-a18b-acb24ee6f7c0)
 
-We modify `force_checkout` to `True` (Base64: `VHJ1ZQ==`) and `cart_empty` to `False` to bypass the validation.
+We modify `force_checkout` to `True` (Base64: `VHJ1ZQ==`) and `cart_empty` to `False` (Base64: `RmFsc2U=`) to bypass the validation.
 
 ![Bypass Modification](https://github.com/user-attachments/assets/77f47f2b-dfc0-4c8b-9627-4aaaeb645a32)
 
@@ -69,7 +69,7 @@ We modify `force_checkout` to `True` (Base64: `VHJ1ZQ==`) and `cart_empty` to `F
 
 ![Bypass Success](https://github.com/user-attachments/assets/bab2afff-1a47-43bc-a8e7-066bdf064bd8)
 
-Our balance is now sufficient to purchase the Magic Wand.
+Our balance is now sufficient to purchase the "Iced Out Magic Wand".
 
 ![Massive Balance](https://github.com/user-attachments/assets/8cb2033c-5ed2-4e7a-baf9-2d11fcd7a85e)
 
@@ -81,6 +81,7 @@ Purchasing the wand grants **Part 2 of the Flag**.
 
 ## 🍪 Phase 3: Cookie Manipulation & Admin Access
 The final item, **Elixir Vitae**, has a price of `None`, breaking the checkout. We must gain admin access to fix the price.
+![Purchase Error (None Price)](https://github.com/user-attachments/assets/070db45b-c1f7-4910-ba46-a2ec9012c130)
 
 **The Exploit:**
 Visiting the `/admin` route assigns an `auth` cookie.
@@ -99,7 +100,7 @@ We craft a new cookie: `{"user": "admin", "loggedIn": true}` (Base64: `eyJ1c2VyI
 We change the price of the **Elixir Vitae** to a valid number.
 
 ![Price Change](https://github.com/user-attachments/assets/116a4df4-e73d-43c9-89fb-611583cb03f7)
-![Price Updated Confirmation](https://github.com/user-attachments/assets/3873c327-0ef6-4be8-aba7-607c9bec0ab1)
+![Price Updated Confirmation](https://github.com/user-attachments/assets/3873c327-0ef6-4be8-aa74-607c9bec0ab1)
 
 Finally, we remove the admin cookie to return to the standard index page.
 
@@ -120,4 +121,4 @@ Finally, we remove the admin cookie to return to the standard index page.
 * **Secure Sessions:** Cookies should be signed or encrypted to prevent privilege escalation.
 * **Business Logic:** Ensure checkout functions validate price states and enforce positive integers for quantities.
 
-**Thanks for playing ISSessions FantasyCTF!**
+**Thanks for reading my write-up and I really hope you enjoyed!**
