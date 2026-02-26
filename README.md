@@ -6,7 +6,7 @@
 ---
 
 ## Background
-The **E-Bazaar** was a spotlight challenge for the 2026 ISSessions FantasyCTF. Despite being my favorite challange out of all challanges I've made, it remained unsolved by the end of the event. This write-up explores the three distinct web vulnerabilities required to "piece together" the 3-part flag.
+The **E-Bazaar** was a spotlight challenge for the 2026 ISSessions FantasyCTF. Despite being my favorite challange out of all the challanges I've made, it remained unsolved by the end of the event. This write-up explores the three distinct web vulnerabilities required to "piece together" the 3-part flag.
 
 ![Challange Banner](https://github.com/user-attachments/assets/2182e93f-d2bf-4b1c-ad0f-a4db56c515c9)
 
