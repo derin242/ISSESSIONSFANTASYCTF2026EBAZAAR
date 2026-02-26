@@ -84,16 +84,25 @@ The final item, **Elixir Vitae**, has a price of `None`, breaking the checkout. 
 ![Purchase Error (None Price)](https://github.com/user-attachments/assets/070db45b-c1f7-4910-ba46-a2ec9012c130)
 
 **The Exploit:**
+We can now visit the `/admin` route since we found the first 2 pieces.
 Visiting the `/admin` route assigns an `auth` cookie.
 
 ![Admin Route](https://github.com/user-attachments/assets/a0481a5d-4d36-4556-8dc7-2acc8977d9f0)
 ![Auth Cookie](https://github.com/user-attachments/assets/0de9eb8c-3ebe-4db0-bd5b-d9fe566c8884)
 
-The cookie decodes from Base64 to: `{"user": "None", "loggedIn": false}`. We test for the `admin` user. A specific error message confirms the username is valid.
+The value of the cookie is `eyJ1c2VyIjogIk5vbmUiLCAibG9nZ2VkSW4iOiBmYWxzZX0=`. When decoded from Base64, it reveals a standard JSON object: `{"user": "None", "loggedIn": false}`.
+To exploit this insecure session management, we first need to identify a valid username. Attempting to log in with random credentials returns a generic error message:
+
+![Random Creds Error](https://github.com/user-attachments/assets/0998a65c-5b8f-4360-b58b-74c3dfff3e34)
+
+However, when we try the username `admin`, the error message changes, confirming that the user `admin` exists but the password was incorrect. This is a classic "User Enumeration" vulnerability.
 
 ![Admin User Validation](https://github.com/user-attachments/assets/e1affa98-c29f-43e5-87ae-807ee752d0fe)
 
-We craft a new cookie: `{"user": "admin", "loggedIn": true}` (Base64: `eyJ1c2VyIjogImFkbWluIiwgImxvZ2dlZEluIjogdHJ1ZX0=`). After injecting it, we gain access to the Admin Panel.
+With the confirmed username, we can bypass the login logic entirely by spoofing the cookie.
+We craft the new cookie: `{"user": "admin", "loggedIn": true}` (Base64: `eyJ1c2VyIjogImFkbWluIiwgImxvZ2dlZEluIjogdHJ1ZX0=`).
+
+By refreshing the main page with our new credentials injected, we bypassed the login gate and gained full access to the administrative dashboard.
 
 ![Admin Panel](https://github.com/user-attachments/assets/5d60472e-d331-49e2-9a97-62d05695979a)
 
